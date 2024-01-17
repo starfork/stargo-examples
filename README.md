@@ -33,3 +33,29 @@ starting: gRPC Listener 51100
 ```
 
 表示成功
+
+
+[使用命令行调试工具 grpc-client-cli ](https://github.com/starfork/stargo?tab=readme-ov-file#grpc-client-cli-%E5%91%BD%E4%BB%A4%E8%A1%8C%E8%B0%83%E8%AF%95%E5%B7%A5%E5%85%B7)
+```
+? Choose a method: FetchEcho
+
+Message json (type ? to see defaults): {}
+
+```
+运行FetchEcho可以得到如下内容
+```
+{
+  "count": "2",
+  "data": [
+    {
+      "id": 1,
+      "name": "name1"
+    },
+    {
+      "id": 2,
+      "name": "name2"
+    }
+  ]
+}
+
+```

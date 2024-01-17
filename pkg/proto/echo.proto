@@ -1,0 +1,18 @@
+syntax = "proto3";
+package go.park.examples.v1;
+ 
+option go_package = "service/examples/pkg/pb/v1";
+
+message Echo { 
+  uint32 id = 1; //
+  string name = 2; // 
+}
+
+message FetchEchoRequest{
+    uint32 id = 1; //
+}
+
+message  EchoResponse{
+   int64 count=1;
+   repeated Echo data=2;
+}

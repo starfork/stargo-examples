@@ -7,6 +7,7 @@ import (
 
 	"github.com/joho/godotenv"
 	"github.com/starfork/stargo"
+	"google.golang.org/grpc/reflection"
 )
 
 func main() {
@@ -19,8 +20,10 @@ func main() {
 		stargo.Name("examples"),
 		stargo.Config(sc.Server),
 	)
+	s := app.Server()
+	reflection.Register(s)
 
-	pb.RegisterExamplesServer(app.Server(), server.New(app))
+	pb.RegisterExamplesServer(s, server.New(app))
 
 	app.Run()
 

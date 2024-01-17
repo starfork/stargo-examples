@@ -1,10 +1,14 @@
 syntax = "proto3";
-package go.park.examples; 
+package go.park.examples.v1;
+
+import "service/examples/pkg/proto/echo.proto";
 option go_package = "service/examples/pkg/pb/v1";
 
 service Examples {
-      
+  rpc Test(Empty) returns (Response) {}
 
+  rpc ReadEcho(FetchEchoRequest) returns (Echo) {}
+  rpc FetchEcho(FetchEchoRequest) returns (EchoResponse) {}
 }
 
 message Empty {}

@@ -7,7 +7,10 @@
 package v1
 
 import (
+	context "context"
 	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 )
 
 // This is a compile-time assertion to ensure that this generated file
@@ -15,12 +18,19 @@ import (
 // Requires gRPC-Go v1.32.0 or later.
 const _ = grpc.SupportPackageIsVersion7
 
-const ()
+const (
+	Examples_Test_FullMethodName      = "/go.park.examples.v1.Examples/Test"
+	Examples_ReadEcho_FullMethodName  = "/go.park.examples.v1.Examples/ReadEcho"
+	Examples_FetchEcho_FullMethodName = "/go.park.examples.v1.Examples/FetchEcho"
+)
 
 // ExamplesClient is the client API for Examples service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ExamplesClient interface {
+	Test(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Response, error)
+	ReadEcho(ctx context.Context, in *FetchEchoRequest, opts ...grpc.CallOption) (*Echo, error)
+	FetchEcho(ctx context.Context, in *FetchEchoRequest, opts ...grpc.CallOption) (*EchoResponse, error)
 }
 
 type examplesClient struct {
@@ -31,10 +41,40 @@ func NewExamplesClient(cc grpc.ClientConnInterface) ExamplesClient {
 	return &examplesClient{cc}
 }
 
+func (c *examplesClient) Test(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Response, error) {
+	out := new(Response)
+	err := c.cc.Invoke(ctx, Examples_Test_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *examplesClient) ReadEcho(ctx context.Context, in *FetchEchoRequest, opts ...grpc.CallOption) (*Echo, error) {
+	out := new(Echo)
+	err := c.cc.Invoke(ctx, Examples_ReadEcho_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *examplesClient) FetchEcho(ctx context.Context, in *FetchEchoRequest, opts ...grpc.CallOption) (*EchoResponse, error) {
+	out := new(EchoResponse)
+	err := c.cc.Invoke(ctx, Examples_FetchEcho_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ExamplesServer is the server API for Examples service.
 // All implementations must embed UnimplementedExamplesServer
 // for forward compatibility
 type ExamplesServer interface {
+	Test(context.Context, *Empty) (*Response, error)
+	ReadEcho(context.Context, *FetchEchoRequest) (*Echo, error)
+	FetchEcho(context.Context, *FetchEchoRequest) (*EchoResponse, error)
 	mustEmbedUnimplementedExamplesServer()
 }
 
@@ -42,6 +82,15 @@ type ExamplesServer interface {
 type UnimplementedExamplesServer struct {
 }
 
+func (UnimplementedExamplesServer) Test(context.Context, *Empty) (*Response, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Test not implemented")
+}
+func (UnimplementedExamplesServer) ReadEcho(context.Context, *FetchEchoRequest) (*Echo, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ReadEcho not implemented")
+}
+func (UnimplementedExamplesServer) FetchEcho(context.Context, *FetchEchoRequest) (*EchoResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method FetchEcho not implemented")
+}
 func (UnimplementedExamplesServer) mustEmbedUnimplementedExamplesServer() {}
 
 // UnsafeExamplesServer may be embedded to opt out of forward compatibility for this service.
@@ -55,13 +104,80 @@ func RegisterExamplesServer(s grpc.ServiceRegistrar, srv ExamplesServer) {
 	s.RegisterService(&Examples_ServiceDesc, srv)
 }
 
+func _Examples_Test_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ExamplesServer).Test(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Examples_Test_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ExamplesServer).Test(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Examples_ReadEcho_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchEchoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ExamplesServer).ReadEcho(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Examples_ReadEcho_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ExamplesServer).ReadEcho(ctx, req.(*FetchEchoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Examples_FetchEcho_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(FetchEchoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ExamplesServer).FetchEcho(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Examples_FetchEcho_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ExamplesServer).FetchEcho(ctx, req.(*FetchEchoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Examples_ServiceDesc is the grpc.ServiceDesc for Examples service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Examples_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "go.park.examples.Examples",
+	ServiceName: "go.park.examples.v1.Examples",
 	HandlerType: (*ExamplesServer)(nil),
-	Methods:     []grpc.MethodDesc{},
-	Streams:     []grpc.StreamDesc{},
-	Metadata:    "service/examples/pkg/proto/examples.proto",
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Test",
+			Handler:    _Examples_Test_Handler,
+		},
+		{
+			MethodName: "ReadEcho",
+			Handler:    _Examples_ReadEcho_Handler,
+		},
+		{
+			MethodName: "FetchEcho",
+			Handler:    _Examples_FetchEcho_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "service/examples/pkg/proto/examples.proto",
 }
