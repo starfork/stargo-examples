@@ -1,0 +1,11 @@
+syntax = "proto3";
+package go.park.examples; 
+option go_package = "service/examples/pkg/pb/v1";
+
+service Examples {
+      
+
+}
+
+message Empty {}
+message Response { string msg = 2; }

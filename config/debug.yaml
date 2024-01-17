@@ -1,0 +1,4 @@
+server:
+  environment: debug
+  port: ':51100'
+  timezome: Asia/Shanghai
